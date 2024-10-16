@@ -26,7 +26,11 @@ export const setToken = (value) => {
 
 export let message = null;
 
-
+import { showTaskTracker, handleTaskTracker } from "../script/task-tracker.js";
+import { handleAddEdit } from "../script/addEditTaskTracker.js";
+import { showLogin, handleLogin } from "../script/login.js";
+// import { handleLogin } from "../script/login.js";
+import { handleRegister } from "../script/register.js";
 
 const signUpButton = document.getElementById('signUp');
 const signInButton = document.getElementById('signIn');
@@ -39,3 +43,26 @@ signUpButton.addEventListener('click', () => {
 signInButton.addEventListener('click', () => {
     container.classList.remove("right-panel-active");
 });
+
+document.getElementById('logout').addEventListener("click", (e) => {
+    setToken(null);
+    message.textContent = "You have been logged off.";
+    showLogin();
+});
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    token = localStorage.getItem("token");
+    message = document.getElementById("message");
+    handleLogin();
+    handleTaskTracker();
+    handleRegister();
+    handleAddEdit();
+    if (token) {
+      showTaskTracker();
+    //   document.getElementById('menubar').style.display = "block";
+    } else {
+      showLogin();
+    }
+  });
