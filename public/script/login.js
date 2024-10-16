@@ -7,7 +7,7 @@ import {
     enableInput,
     setToken,
   } from "../js/script.js";
-  import { showLoginRegister } from "./loginRegister.js";
+
 import { showRegister } from "./register.js";
   import { showTaskTracker } from "./task-tracker.js";
   
@@ -49,9 +49,9 @@ import { showRegister } from "./register.js";
   
               email.value = "";
               password.value = "";
-              // document.getElementById('menubar').style.display = "block";
               showTaskTracker();
             } else {
+              document.getElementById('login-error').textContent = data.msg;
               message.textContent = data.msg;
             }
           } catch (err) {
@@ -73,6 +73,5 @@ import { showRegister } from "./register.js";
   export const showLogin = () => {
     email.value = null;
     password.value = null;
-    // document.getElementById('menubar').style.display = "none";
     setDiv(loginDiv);
   };

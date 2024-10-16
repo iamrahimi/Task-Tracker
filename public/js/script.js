@@ -29,7 +29,7 @@ export let message = null;
 import { showTaskTracker, handleTaskTracker } from "../script/task-tracker.js";
 import { handleAddEdit } from "../script/addEditTaskTracker.js";
 import { showLogin, handleLogin } from "../script/login.js";
-// import { handleLogin } from "../script/login.js";
+import { filterTasks } from "../script/filter.js";
 import { handleRegister } from "../script/register.js";
 
 const signUpButton = document.getElementById('signUp');
@@ -52,6 +52,7 @@ document.getElementById('logout').addEventListener("click", (e) => {
 
 
 
+
 document.addEventListener("DOMContentLoaded", () => {
     token = localStorage.getItem("token");
     message = document.getElementById("message");
@@ -59,10 +60,12 @@ document.addEventListener("DOMContentLoaded", () => {
     handleTaskTracker();
     handleRegister();
     handleAddEdit();
+    filterTasks();
+
     if (token) {
-      showTaskTracker();
-    //   document.getElementById('menubar').style.display = "block";
-    } else {
-      showLogin();
-    }
+        showTaskTracker();
+      } else {
+        showLogin();
+      }
+    
   });

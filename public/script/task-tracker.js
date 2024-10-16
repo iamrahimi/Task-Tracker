@@ -6,49 +6,73 @@ import {
   token,
   enableInput,
 } from "../js/script.js";
-import { showLoginRegister } from "./loginRegister.js";
 import { showAddEdit, deleteTask } from "./addEditTaskTracker.js";
+import { showLogin } from "./login.js";
 
 let taskTrackerDiv = null;
-let taskTrackerTable = null;
-let taskTrackerTableHeader = null;
 let taskTrackerBody = null;
-
+let pagination = null;
+let pageNumber = 1;
+let limit = 6;
+let total = 0;
+let loginDiv = null;
 export const handleTaskTracker = () => {
   taskTrackerDiv = document.getElementById("task-box");
-  const logoff = document.getElementById("logoff");
+  pagination = document.getElementById('pagination');
+  const loginDiv = document.getElementById("login-register-box");
   const addTaskTracker = document.getElementById("add-task-tracker");
   taskTrackerBody = document.getElementById('task-wrapper')
 
 
   taskTrackerDiv.addEventListener("click", (e) => {
-    console.log('I am here');
-        const taskTrackerId = e.target.getAttribute('data-id');
-        const button = e.target.getAttribute('action');
+
+      const taskTrackerId = e.target.getAttribute('data-id');
+      const button = e.target.getAttribute('action');
 
     if (inputEnabled && e.target.nodeName === "A" || inputEnabled && e.target.nodeName === "LABEL") {
       if (e.target === addTaskTracker) {
         showAddEdit(null);
 
-      } else if (e.target === logoff) {
-        showLoginRegister();
-
-      } else if(taskTrackerId != null && button == 'edit') {
+      }  else if(taskTrackerId != null && button == 'edit') {
         showAddEdit(taskTrackerId);
       } else if(taskTrackerId != null && button == 'complete') {
         showAddEdit(taskTrackerId);
       } else if(taskTrackerId != null && button == 'delete') {
         deleteTask(taskTrackerId);
+      } 
+    }
+
+    if(inputEnabled && e.target.nodeName == "DIV"){
+      if( button == 'next-page') {
+
+        if(pageNumber < total)
+        {
+          pageNumber++;
+          showTaskTracker();
+        }
+        
+      }
+
+      if( button == 'previous-page') {
+        if(pageNumber > 1 ){
+          pageNumber = pageNumber - 1;
+          showTaskTracker();
+        }
+          
       }
     }
   });
 };
 
-export const showTaskTracker = async () => {
+export const showTaskTracker = async (filter = null) => {
   try {
     enableInput(false);
-
-    const response = await fetch("/api/v1/task-tracker", {
+    let url = `/api/v1/task-tracker?limit=${limit}&page=${pageNumber}`;
+    if(filter != null && filter != "" )
+    {
+      url = url+ filter;
+    }
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -56,18 +80,29 @@ export const showTaskTracker = async () => {
       },
     });
 
-    const {data} = await response.json();
-     
-    let children = [taskTrackerTableHeader];
+
+    if(response.statusText == "Unauthorized"){
+      console.log('I am here');
+      setToken(null);
+      message.textContent = "You have been logged off.";
+      showLogin();
+
+      System.exit(0)
+
+    }
+
+    const {data, totalTask} = await response.json();     
 
     if (response.status === 200) {
       if (data.count === 0) {
-        console.log('true')
-        taskTrackerTable.replaceChildren(...children); // clear this for safety
+        taskTrackerBody.replaceChildren(...children); // clear this for safety
       } else {
         let tableData = "";
-        // let {data} = data;
+        
+        
         for (let i = 0; i < data.length; i++) {
+          let createdAt = new Date(data[i].createdAt).toLocaleDateString();
+          let deadline = new Date(data[i].deadline).toLocaleDateString();
           tableData += `<div class="card">
                   <input type="checkbox" id="card${i}" class="more" aria-hidden="true">
                   <div class="content">
@@ -100,11 +135,11 @@ export const showTaskTracker = async () => {
                         </div>
                         <div class="location">
                             <span>Create At</span> <br>
-                            ${data[i].createdAt}
+                            ${createdAt}
                         </div>
                         <div class="price">
                             <span>Deadline</span> <br>
-                            ${data[i].deadline}
+                            ${deadline}
                         </div>
                         
                         <label for="card${i}" class="button return" aria-hidden="true">Back</label>
@@ -117,13 +152,28 @@ export const showTaskTracker = async () => {
                   </div>
                 </div>`;
         }
+        if(total > 6){
+          total = totalTask / 6;
+        }else {
+          total = 1;
+        }
+        
+        let paginationNumber = `
+                <div class='text' action="previous-page">Previous </div>
+                  <div class='counter'>
+                      <span class='number' >${pageNumber}</span>
+                      <div class='background'></div>
+                      <span class='number'>${total}</span>
+                  </div>
+                <div class='text' action="next-page">Next</div>`;
+        pagination.innerHTML = paginationNumber;
         taskTrackerBody.innerHTML = tableData;
       }
     } else {
       message.textContent = data.msg;
     }
   } catch (err) {
-    message.textContent = "A communication error occurred.";
+    message.textContent = "Something went wrong, please logout/login";
   }
   enableInput(true);
   setDiv(taskTrackerDiv);

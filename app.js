@@ -24,7 +24,7 @@ app.set('trust proxy', 1);
 app.use(
   rateLimiter({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 2000, // limit each IP to 100 requests per windowMs
+    max: 1000, // limit each IP to 100 requests per windowMs
   })
 );
 app.use(express.json());
@@ -33,8 +33,9 @@ app.use(cors());
 app.use(xss());
 
 app.use(express.static("public"));
+
 // routes
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.send('<h1>TASK TRACKER API</h1><a href="/api-docs">Documentation</a>');
   });
 
@@ -42,15 +43,14 @@ app.use('/api/v1/auth', authRoute);
 app.use('/api/v1/task-tracker', authenticateUser, taskTrackerRoute);
 
 
-// app.use(notFoundMiddleware);
-// app.use(errorHandlerMiddleware);
-
-
 // Swagger
 const swaggerUI = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 
 

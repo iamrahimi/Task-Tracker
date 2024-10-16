@@ -109,6 +109,8 @@ export const showAddEdit = async (taskTrackerId) => {
         title.value = data.taskTracker.title;
         description.value = data.taskTracker.description;
         deadlineDate.value = data.taskTracker.deadline;
+        status.value = data.taskTracker.status;
+        proiority.value = data.taskTracker.proiority;
 
         addigTaskTracker.textContent = "UPDATE";
         message.textContent = "";

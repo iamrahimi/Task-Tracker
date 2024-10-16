@@ -6,7 +6,6 @@ import {
     enableInput,
     setToken,
   } from "../js/script.js";
-  import { showLoginRegister } from "./loginRegister.js";
   import { showTaskTracker } from "./task-tracker.js";
   
   let registerDiv = null;
@@ -27,7 +26,6 @@ import {
     email1 = document.getElementById("email-register");
     password1 = document.getElementById("password-register");
     password2 = document.getElementById("confirm-password");
-    // errorMessage = document.getElementById('error-div');
     const registerButton = document.getElementById("register-button");
 
 
@@ -95,7 +93,7 @@ import {
                 }
               } catch (err) {
                 console.error(err);
-                message.textContent = "A communications error occurred.";
+                message.textContent = "Something went wrong, please try again";
               }
     
               enableInput(true);

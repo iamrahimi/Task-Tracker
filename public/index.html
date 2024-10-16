@@ -32,6 +32,7 @@
                         <input type="email" id="email-login" placeholder="Email" />
                         <input type="password" id="password-login" placeholder="Password" />
                         <span id="email-pwd-required-msg" style="display: none;">Email & password are required, Please try again !!!</span>
+                        <span id="login-error"></span>
                         <!-- <a href="#">Forgot your password?</a> -->
                         <button id="login-button">Sign In</button>
                     </form>
@@ -53,23 +54,26 @@
             </div>
         </div>
 
-        <div id="task-box" >
+        <div id="task-box" style="display:none;">
             <section class="menuSection">
                 <nav>
                   <ul class="menuItems">
                     <li><a href='#' data-item='New Task' id="add-task-tracker">New Task</a></li>
-                    <li><a href='#' data-item='Logout' id="logout">Logout</a></li>
+                    <li><a href='#' data-item='Filter' id="task-filter">Filter</a></li>
+                    <li style="margin-left: 110px"><a href='#' data-item='Logout' id="logout">Logout</a></li>
                   </ul>
                 </nav>
               </section>
             <div class="wrapper" id="task-wrapper">
                 <!-- Task Tracker recored goes here  -->
             </div>
+            <div class='pagination' id="pagination">
+                
+            </div>
         </div>
         <span id="message"></span>
         <div id="new-task-box" style="display:none;">
             <div class="container" id="container">
-
                 <div class="form-container sign-in-container" id="login-box">
                     <form action="#">
                         <h1>New Task</h1>
@@ -104,7 +108,56 @@
                 </div>
             </div>
         </div>
-        <div id="edit-task-box" style="display:none;"></div>
+
+        <div id="filter-box" style="display:none;">
+            <div class="container" id="container">
+                <div class="form-container sign-in-container">
+                    <form action="#">
+                        <h1>Filter</h1>
+                        <span>or plan your day</span>
+                        <input type="text" id="searchBy" placeholder="Search" />
+                        <div>
+                            <span>Sort by </span>
+                            <select id="sortBy">
+                                <option value="all">Select by</option>
+                                <option value="latest"> Latest</option>
+                                <option value="oldest">Oldest</option>
+                                <option value="a-z"> A-Z</option>
+                                <option value="z-a">Z-A</option>
+                            </select>
+                        </div>
+                        <div>
+                            <span>Sort by status</span>
+                            <select id="sortByStatus">
+                                <option value="all">Select By</option>
+                                <option value="pending"> Pending</option>
+                                <option value="in-progress">In-progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                        <div>
+                            <span>Sort by proiority</span>
+                            <select id="sortByProiority">
+                                <option value="all">Select by</option>
+                                <option value="high"> High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                        <button id="filter-task-tracker" style="margin-top: 10px;">Filter</button>
+                        <button id="filter-task-cancel" style="margin-top: 10px;">Cancel</button>
+                    </form>
+                </div>
+                <div class="overlay-container">
+                    <div class="overlay">
+                        <div class="overlay-panel overlay-right">
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </body>
     <script src="js/script.js" type="module"></script>
 
