@@ -73,7 +73,7 @@ export const showTaskTracker = async () => {
                   <div class="content">
                   
                     <div class="front" >
-                    <p style="font-weight: 600; color: #fff;">${i + 1}</p>
+                    
                       <div class="inner">
                         <h2>${data[i].title}</h2>
                         <div class="rating">
