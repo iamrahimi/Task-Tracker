@@ -82,7 +82,6 @@ export const showTaskTracker = async (filter = null) => {
 
 
     if(response.statusText == "Unauthorized"){
-      console.log('I am here');
       setToken(null);
       message.textContent = "You have been logged off.";
       showLogin();
@@ -152,7 +151,7 @@ export const showTaskTracker = async (filter = null) => {
                   </div>
                 </div>`;
         }
-        if(total > 6){
+        if(totalTask > 6){
           total = totalTask / 6;
         }else {
           total = 1;
