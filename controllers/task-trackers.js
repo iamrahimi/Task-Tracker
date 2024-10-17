@@ -15,15 +15,51 @@ const createTaskTracker = async function (req, res) {
 
 const getAllTaskTracker = async function (req, res) {
 
-    let taskTracker =  TaskTracker.find({owner: req.user.userId});
-    
+    const { search, status, proiority, sortBy } = req.query;
 
+    const queryObject = {
+        owner: req.user.userId,
+    };
+
+    if (search) {
+        queryObject.title = { $regex: search, $options: 'i' };
+    }
+
+    if (status) {
+        queryObject.status = { $regex: status, $options: 'i' };
+    }
+
+    if (proiority) {
+        queryObject.proiority = { $regex: proiority, $options: 'i' };
+    }
+
+    if (status && status !== 'all') {
+        queryObject.status = status;
+    }
+    
+    let taskTracker =  TaskTracker.find(queryObject);
+
+    if (sortBy === 'latest') {
+        taskTracker = taskTracker.sort('-createdAt');
+    }
+    if (sortBy === 'oldest') {
+        taskTracker = taskTracker.sort('createdAt');
+    }
+    if (sortBy === 'a-z') {
+        taskTracker = taskTracker.sort('title');
+    }
+    if (sortBy === 'z-a') {
+        taskTracker = taskTracker.sort('-title');
+    }
+
+    const totalTask = await TaskTracker.countDocuments(queryObject);
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
     const skip = (page - 1) * limit;
     taskTracker = taskTracker.skip(skip).limit(limit);
     taskTracker = await taskTracker;
-    return res.status(StatusCodes.OK).json({status: true, data: taskTracker}); 
+    
+    return res.status(StatusCodes.OK).json({status: true, totalTask:totalTask, data: taskTracker}); 
 }
 
 const getTaskTracker = async function (req, res) {
