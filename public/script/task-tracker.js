@@ -152,7 +152,7 @@ export const showTaskTracker = async (filter = null) => {
                 </div>`;
         }
         if(totalTask > 6){
-          total = totalTask / 6;
+          total = Math.round(totalTask / 6);
         }else {
           total = 1;
         }
