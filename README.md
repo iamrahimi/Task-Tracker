@@ -22,7 +22,7 @@ The Task Tracker is a Node.js application designed to help users manage tasks ef
 git clone https://github.com/iamsrahimi/task-tracker.git
 cd task-tracker
 
-**Install Dependencies**
+Install Dependencies
 Before running the project, install all the required dependencies using npm:
 
 npm install
@@ -35,7 +35,7 @@ JWT_EXPIRY_DURATION=1h # Adjust as needed (e.g., 1h, 24h)
 SESSION_SECRET=your_session_secret_key
 Replace the placeholder values (your_mongodb_connection_string, your_jwt_secret_key, and your_session_secret_key) with the appropriate values for your setup.
 
-**Run the Application**
+Run the Application
 Once everything is set up, you can start the development server:
 
 npm start
