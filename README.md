@@ -31,6 +31,7 @@ npm install
 Create a .env file in the root directory of the project and add the following environment variables:
 
 DB_URI=your_mongodb_connection_string
+
 JWT_SECRET_STRING=your_jwt_secret_key
 JWT_EXPIRY_DURATION=1h # Adjust as needed (e.g., 1h, 24h)
 SESSION_SECRET=your_session_secret_key
