@@ -22,10 +22,11 @@ The Task Tracker is a Node.js application designed to help users manage tasks ef
 git clone https://github.com/iamsrahimi/task-tracker.git
 cd task-tracker
 
+
 Install Dependencies
 Before running the project, install all the required dependencies using npm:
-
 npm install
+
 Create .env File
 Create a .env file in the root directory of the project and add the following environment variables:
 
